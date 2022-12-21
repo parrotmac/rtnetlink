@@ -35,7 +35,7 @@ async fn flush_addresses(handle: Handle, link: String) -> Result<(), Error> {
             .set_link_index_filter(link.header.index)
             .execute();
         while let Some(addr) = addresses.try_next().await? {
-            handle.address().del(addr).execute().await?;
+            handle.address().flush(addr).execute().await?;
         }
         Ok(())
     } else {

@@ -2,10 +2,10 @@
 
 use std::net::IpAddr;
 
+use netlink_packet_route::AddressMessage;
+
 use super::{AddressAddRequest, AddressDelRequest, AddressGetRequest};
 use crate::Handle;
-
-use netlink_packet_route::AddressMessage;
 
 pub struct AddressHandle(Handle);
 
@@ -30,7 +30,16 @@ impl AddressHandle {
     }
 
     /// Delete the given address
-    pub fn del(&self, address: AddressMessage) -> AddressDelRequest {
-        AddressDelRequest::new(self.0.clone(), address)
+    pub fn del(
+        &self,
+        index: u32,
+        address: IpAddr,
+        prefix_len: u8,
+    ) -> AddressDelRequest {
+        AddressDelRequest::new(self.0.clone(), index, address, prefix_len)
+    }
+
+    pub fn flush(&self, message: AddressMessage) -> AddressDelRequest {
+        AddressDelRequest::flush(self.0.clone(), message)
     }
 }
