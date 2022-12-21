@@ -679,6 +679,22 @@ impl LinkAddRequest {
             .append_nla(Nla::IfName(name))
     }
 
+    /// Create a new Wireguard interface.
+    /// This is equivalent to `ip link add link NAME type wireguard`.
+    pub fn wireguard(self, name: String) -> Self {
+        self.name(name.clone())
+            .link_info(InfoKind::Wireguard, None)
+            .append_nla(Nla::IfName(name))
+    }
+
+    /// Create a new VCAN interface
+    /// This is equivalent to `ip link add link NAME type vcan`.
+    pub fn vcan(self, name: String) -> Self {
+        self.name(name.clone())
+            .link_info(InfoKind::Vcan, None)
+            .append_nla(Nla::IfName(name))
+    }
+
     /// Replace existing matching link.
     pub fn replace(self) -> Self {
         Self {
